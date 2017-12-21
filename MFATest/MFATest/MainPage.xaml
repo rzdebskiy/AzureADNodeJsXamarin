@@ -4,22 +4,27 @@
              xmlns:local="clr-namespace:MFATest"
              x:Class="MFATest.MainPage">
     <ContentPage.Content>
+        <ScrollView>
         <StackLayout>
-            <BoxView HorizontalOptions="FillAndExpand" HeightRequest="50"
-          VerticalOptions="Start"/>
-            <Label Text="Welcome to Xamarin.Forms!"
+            <Label Text="Pass-through auth test app"
                 VerticalOptions="Center"
                    HeightRequest="20"
                 HorizontalOptions="CenterAndExpand" />
-            <Button x:Name="btnLogin" Text="Login to Azure Active Directory" Clicked="btnLogin_Clicked" VerticalOptions="Center" />
+            <StackLayout Orientation="Horizontal"  HorizontalOptions="Center">
+                <Button x:Name="btnLogin" Text="Login to AD" Clicked="btnLogin_Clicked" FontSize="Small" HorizontalOptions="Center"/>
+                <Button x:Name="btnLogout" Text="Clear token" Clicked="btnLogout_Clicked" FontSize="Small" HorizontalOptions="Center" IsEnabled="False"/>
+            </StackLayout>
             <StackLayout Orientation="Horizontal">
                 <Label x:Name="lblTextUser" Text="Authenticated User: " FontSize="Small"/>
                 <Label x:Name="lblUserName" Text="none" FontSize="Small"/>
-            </StackLayout>
-            <Label x:Name="lblMessage" HeightRequest="100" FontSize="Small"/>
-            <Button x:Name="btnLogout" Text="Clear token and all cookies" Clicked="btnLogout_Clicked" />
-            <Button x:Name="btnCallRestAdal" Text="Tasks list" Clicked="btnCallRestAdal_Clicked" />
+            </StackLayout>            
+            <Button x:Name="btnCallRestAdal" Text="Get Tasks list" Clicked="btnCallRestAdal_Clicked" />
+            <Entry x:Name="txtInput" Text="Task01" />
             <Button x:Name="btnAddTaskRestAdal" Text="Add task" Clicked="btnAddTaskRestAdal_Clicked" />
-        </StackLayout>
+            <Button x:Name="btnDeleteTaskRestAdal" Text="Clear all tasks" Clicked="btnDeleteTaskRestAdal_Clicked" />
+                <Label Text="Messages:" FontSize="Small"/>
+                <Label x:Name="lblMessage" FontSize="Small"/>
+            </StackLayout>
+            </ScrollView>
     </ContentPage.Content>
 </ContentPage>
