@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MFATest"
+             x:Class="MFATest.MainPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <BoxView HorizontalOptions="FillAndExpand" HeightRequest="50"
+          VerticalOptions="Start"/>
+            <Label Text="Welcome to Xamarin.Forms!"
+                VerticalOptions="Center"
+                   HeightRequest="20"
+                HorizontalOptions="CenterAndExpand" />
+            <Button x:Name="btnLogin" Text="Login to Azure Active Directory" Clicked="btnLogin_Clicked" VerticalOptions="Center" />
+            <StackLayout Orientation="Horizontal">
+                <Label x:Name="lblTextUser" Text="Authenticated User: " FontSize="Small"/>
+                <Label x:Name="lblUserName" Text="none" FontSize="Small"/>
+            </StackLayout>
+            <Label x:Name="lblMessage" HeightRequest="100" FontSize="Small"/>
+            <Button x:Name="btnLogout" Text="Clear token and all cookies" Clicked="btnLogout_Clicked" />
+            <Button x:Name="btnCallRestAdal" Text="Tasks list" Clicked="btnCallRestAdal_Clicked" />
+            <Button x:Name="btnAddTaskRestAdal" Text="Add task" Clicked="btnAddTaskRestAdal_Clicked" />
+            <Entry x:Name="txtinput" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
