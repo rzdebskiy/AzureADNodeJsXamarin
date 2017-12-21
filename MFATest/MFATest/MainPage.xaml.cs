@@ -42,6 +42,7 @@ namespace MFATest
                 lblUserName.Text = userName;
                 lblMessage.Text = "Access Token: " + authResult.AccessToken.ToString();
                 await DisplayAlert("User Login", userLogin, "Ok", "Cancel");
+                btnLogout.IsEnabled = true;
             }
             catch (Exception ex)
             {
@@ -58,6 +59,7 @@ namespace MFATest
                 var auth = DependencyService.Get<IAuthenticator>();
                 auth.ClearAllCookies();
             }
+            btnLogout.IsEnabled = false;
         }
 
         private async void btnCallRestAdal_Clicked(object sender, EventArgs e)
@@ -95,10 +97,10 @@ namespace MFATest
         private async void btnAddTaskRestAdal_Clicked(object sender, EventArgs e)
         {
 
-            if (!(authResult is null))
+            if (authResult != null)
             {
                 client.MaxResponseContentBufferSize = 256000;
-                var uri = new Uri(string.Format("http://centos-srv01.westeurope.cloudapp.azure.com:3000/tasks/sevstaluser01/task02", string.Empty));
+                var uri = new Uri(string.Format($"http://centos-srv01.westeurope.cloudapp.azure.com:3000/tasks/sevstaluser01/{txtInput.Text}", string.Empty));
                 // string authHeader = authResult.CreateAuthorizationHeader();
                 // client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Authorization", authHeader);
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authResult.AccessToken);
@@ -125,5 +127,9 @@ namespace MFATest
                 lblMessage.Text = "Please press Login to Azure button first";
         }
 
+        private void btnDeleteTaskRestAdal_Clicked(object sender, EventArgs e)
+        {
+
+        }
     }
 }
