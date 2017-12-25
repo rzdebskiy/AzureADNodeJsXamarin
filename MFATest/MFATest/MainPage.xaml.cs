@@ -26,6 +26,7 @@ namespace MFATest
 
         public MainPage()
         {
+            
             InitializeComponent();
         }
 
@@ -100,7 +101,9 @@ namespace MFATest
             if (authResult != null)
             {
                 client.MaxResponseContentBufferSize = 256000;
-                var uri = new Uri(string.Format($"http://centos-srv01.westeurope.cloudapp.azure.com:3000/tasks/sevstaluser01/{txtInput.Text}", string.Empty));
+                // var uri = new Uri(string.Format("http://centos-srv01.westeurope.cloudapp.azure.com:3000/tasks/sevstaluser01/{txtInput.Text}", string.Empty));
+                string userTask = txtInput.Text;
+                // var uri = new Uri(string.Format(RestUri + userLogin + "/" + txtInput.Text, string.Empty));
                 // string authHeader = authResult.CreateAuthorizationHeader();
                 // client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Authorization", authHeader);
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authResult.AccessToken);
