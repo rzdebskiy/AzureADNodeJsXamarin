@@ -50,22 +50,8 @@ var options = {
 var users = [];
 var owner = null;
 
-// Our logger
-var log = bunyan.createLogger({
-    name: 'Microsoft OAuth2 Example Web Application',
-         streams: [
-        {
-            stream: process.stderr,
-            level: "error",
-            name: "error"
-        }, 
-        {
-            stream: process.stdout,
-            level: "warn",
-            name: "console"
-        }
-         ]
-});
+// Our simple logger
+var log = bunyan.createLogger({ name: 'Microsoft OAuth2 Example Web Application' });
 
 // MongoDB setup
 // Setup some configuration
@@ -117,7 +103,6 @@ function createTask(req, res, next) {
         return;
     }
 
-    // _task.owner = owner;
     _task.owner = req.params.owner;
     _task.task = req.params.task;
     _task.date = new Date();
@@ -143,7 +128,6 @@ function removeTask(req, res, next) {
 
     Task.remove({
         task: req.params.task,
-        // owner: owner
         owner: req.params.owner
     }, function(err) {
         if (err) {
@@ -174,7 +158,6 @@ function getTask(req, res, next) {
 
     log.info('getTask was called for: ', owner);
     Task.find({
-        // owner: owner
         owner: req.params.owner
     }, function(err, data) {
         if (err) {
@@ -202,7 +185,6 @@ function listTasks(req, res, next) {
 
     Task.find({
         owner: owner
-        // owner: res.params.owner
     }).limit(20).sort('date').exec(function(err, data) {
 
         if (err)
@@ -409,7 +391,8 @@ server.del('/tasks', passport.authenticate('oauth-bearer', {
 
 
 /*
-// Handlers without protection
+// Handlers without protection for testing purpose
+
 server.get('/tasks', listTasks);
 server.get('/tasks/:owner', getTask);
 server.head('/tasks/:owner', getTask);

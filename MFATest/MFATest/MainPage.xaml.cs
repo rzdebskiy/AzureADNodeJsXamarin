@@ -13,13 +13,13 @@ namespace MFATest
 {
     public partial class MainPage : ContentPage
     {
-        public static string clientId = "4c2d7c93-9268-49ea-a31c-da3ca5032922";
+        public static string clientId = "<<Insert your mobile client ID here>>";
         public static string authority = "https://login.windows.net/common";
         public static string returnUri = "http://MFATestPCL-redirect";
         private const string graphResourceUri = "https://graph.windows.net";
         private AuthenticationResult authResult = null;
         private static string userLogin = null;
-        private static string RestUri = "http://centos-srv01.westeurope.cloudapp.azure.com:3000/tasks/";
+        private static string RestUri = "<<Insert your REST API endpoint here>>"; // for example "http://MyRestServer.com:3000/tasks/" 
 
         HttpClient client = new HttpClient();
 
