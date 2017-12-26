@@ -21,7 +21,7 @@
             <Button x:Name="btnCallRestAdal" Text="Get Tasks list" Clicked="btnCallRestAdal_Clicked" />
             <Entry x:Name="txtInput" Text="Task01" />
             <Button x:Name="btnAddTaskRestAdal" Text="Add task" Clicked="btnAddTaskRestAdal_Clicked" />
-            <Button x:Name="btnDeleteTaskRestAdal" Text="Clear all tasks" Clicked="btnDeleteTaskRestAdal_Clicked" />
+            <Button x:Name="btnDeleteTaskRestAdal" Text="Delete task" Clicked="btnDeleteTaskRestAdal_Clicked" />
                 <Label Text="Messages:" FontSize="Small"/>
                 <Label x:Name="lblMessage" FontSize="Small"/>
             </StackLayout>

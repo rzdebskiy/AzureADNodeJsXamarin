@@ -69,10 +69,7 @@ namespace MFATest
             if (!(authResult is null))
             {
                 client.MaxResponseContentBufferSize = 256000;
-                // var uri = new Uri(string.Format("http://centos-srv01.westeurope.cloudapp.azure.com:3000/tasks/sevstaluser01", string.Empty));
                 var uri = new Uri(string.Format(RestUri + userLogin, string.Empty));
-                // string authHeader = authResult.CreateAuthorizationHeader();
-                // client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Authorization", authHeader);
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authResult.AccessToken);
 
                 try
@@ -80,10 +77,7 @@ namespace MFATest
                     var response = await client.GetAsync(uri);
                     if (response.IsSuccessStatusCode)
                     {
-                        //lblMessage.Text = "REST Call Success";
                         lblMessage.Text = await response.Content.ReadAsStringAsync();
-                        //var content = await response.Content.ReadAsStringAsync();
-                        //Items = JsonConvert.DeserializeObject<List<TodoItem>>(content);
                     }
                 }
                 catch (Exception ex)
@@ -101,11 +95,8 @@ namespace MFATest
             if (authResult != null)
             {
                 client.MaxResponseContentBufferSize = 256000;
-                // var uri = new Uri(string.Format("http://centos-srv01.westeurope.cloudapp.azure.com:3000/tasks/sevstaluser01/{txtInput.Text}", string.Empty));
                 string userTask = txtInput.Text;
-                // var uri = new Uri(string.Format(RestUri + userLogin + "/" + txtInput.Text, string.Empty));
-                // string authHeader = authResult.CreateAuthorizationHeader();
-                // client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Authorization", authHeader);
+                var uri = new Uri(string.Format(RestUri + userLogin + "/" + txtInput.Text, string.Empty));
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authResult.AccessToken);
 
                 try
@@ -115,10 +106,7 @@ namespace MFATest
                     var response = await client.PostAsync(uri, queryString);
                     if (response.IsSuccessStatusCode)
                     {
-                        //lblMessage.Text = "REST Call Success";
                         lblMessage.Text = await response.Content.ReadAsStringAsync();
-                        //var content = await response.Content.ReadAsStringAsync();
-                        //Items = JsonConvert.DeserializeObject<List<TodoItem>>(content);
                     }
                 }
                 catch (Exception ex)
@@ -130,8 +118,29 @@ namespace MFATest
                 lblMessage.Text = "Please press Login to Azure button first";
         }
 
-        private void btnDeleteTaskRestAdal_Clicked(object sender, EventArgs e)
+        private async void btnDeleteTaskRestAdal_Clicked(object sender, EventArgs e)
         {
+            if (authResult != null)
+            {
+                client.MaxResponseContentBufferSize = 256000;
+                var uri = new Uri(string.Format(RestUri + userLogin + "/" + txtInput.Text, string.Empty));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authResult.AccessToken);
+
+                try
+                {
+                    var response = await client.DeleteAsync(uri);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        lblMessage.Text = await response.Content.ReadAsStringAsync();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    lblMessage.Text = $"ERROR: {ex.Message}";
+                }
+            }
+            else
+                lblMessage.Text = "Please press Login to Azure button first";
 
         }
     }
