@@ -19,7 +19,7 @@ namespace MFATest
         private const string graphResourceUri = "https://graph.windows.net";
         private AuthenticationResult authResult = null;
         private static string userLogin = null;
-        private static string RestUri = "<<Insert your REST API endpoint here>>"; // for example "http://MyRestServer.com:3000/tasks/" 
+        private static string RestUri = "<<Insert your REST API endpoint here>>"; // for example "http://MyRestServer.com:3000/api/tasks/" 
 
         HttpClient client = new HttpClient();
 

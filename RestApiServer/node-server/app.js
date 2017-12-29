@@ -32,31 +32,34 @@ var config = require('./config');
 var passport = require('passport');
 var OIDCBearerStrategy = require('passport-azure-ad').BearerStrategy;
 
-
 // We pass these options in to the ODICBearerStrategy.
 
 var options = {
     // The URL of the metadata document for your app. We will put the keys for token validation from the URL found in the jwks_uri tag of the in the metadata.
     identityMetadata: config.creds.identityMetadata,
-    issuer: config.creds.issuer,
-    audience: config.creds.audience,
+    clientID: config.creds.clientID,
     validateIssuer: config.creds.validateIssuer,
+    issuer: config.creds.issuer,
     passReqToCallback: config.creds.passReqToCallback,
-    loggingLevel: config.creds.loggingLevel,
-    clientID: config.creds.clientID
+    isB2C: config.creds.isB2C,
+    policyName: config.creds.policyName,
+    allowMultiAudiencesInToken: config.creds.allowMultiAudiencesInToken,
+    audience: config.creds.audience,
+    loggingLevel: config.creds.loggingLevel
 };
 
-// array to hold logged in users and the current logged in user (owner)
-var users = [];
+// current owner
 var owner = null;
 
-// Our simple logger
-var log = bunyan.createLogger({ name: 'Microsoft OAuth2 Example Web Application' });
+// Our logger
+var log = bunyan.createLogger({
+    name: 'Azure AD protected Node.js REST'
+});
 
 // MongoDB setup
 // Setup some configuration
 var serverPort = process.env.PORT || 3000;
-var serverURI = process.env.PORT ? config.creds.mongoose_auth_mongohq : config.creds.mongoose_auth_local;
+var serverURI = config.mongoose_auth_local;
 
 // Connect to MongoDB
 global.db = mongoose.connect(serverURI);
@@ -66,7 +69,7 @@ log.info('MongoDB Schema loaded');
 // Here we create a schema to store our tasks and users. Pretty simple schema for now.
 var TaskSchema = new Schema({
     owner: String,
-    task: String,
+    Text: String,
     completed: Boolean,
     date: Date
 });
@@ -75,15 +78,12 @@ var TaskSchema = new Schema({
 mongoose.model('Task', TaskSchema);
 var Task = mongoose.model('Task');
 
-
-
 /**
  *
  * APIs for our REST Task server
  */
 
 // Create a task
-
 function createTask(req, res, next) {
 
     // Resitify currently has a bug which doesn't allow you to set default headers
@@ -95,16 +95,16 @@ function createTask(req, res, next) {
     // Create a new task model, fill it up and save it to Mongodb
     var _task = new Task();
 
-    if (!req.params.task) {
+    if (!req.params.Text) {
         req.log.warn({
-            params: p
+            params: req.params
         }, 'createTodo: missing task');
         next(new MissingTaskError());
         return;
     }
 
     _task.owner = req.params.owner;
-    _task.task = req.params.task;
+    _task.Text = req.params.Text;
     _task.date = new Date();
 
     _task.save(function(err) {
@@ -118,62 +118,29 @@ function createTask(req, res, next) {
     });
 
     return next();
-
 }
 
-
 // Delete a task by name
-
 function removeTask(req, res, next) {
 
     Task.remove({
-        task: req.params.task,
+        Text: req.params.Text,
         owner: req.params.owner
     }, function(err) {
         if (err) {
             req.log.warn(err,
                 'removeTask: unable to delete %s',
-                req.params.task);
+                req.params.Text);
             next(err);
         } else {
-            log.info('Deleted task:', req.params.task);
+            log.info('Deleted task:', req.params.Text);
             res.send(204);
             next();
         }
     });
 }
 
-// Delete all tasks
-
-function removeAll(req, res, next) {
-    Task.remove();
-    res.send(204);
-    return next();
-}
-
-
 // Get a specific task based on name
-
-function getTask(req, res, next) {
-
-    log.info('getTask was called for: ', owner);
-    Task.find({
-        owner: req.params.owner
-    }, function(err, data) {
-        if (err) {
-            req.log.warn(err, 'get: unable to read %s', owner);
-            next(err);
-            return;
-        }
-
-        res.json(data);
-    });
-
-    return next();
-}
-
-/// Simple returns the list of TODOs that were loaded.
-
 function listTasks(req, res, next) {
     // Resitify currently has a bug which doesn't allow you to set default headers
     // This headers comply with CORS and allow us to mongodbServer our response to any origin
@@ -181,10 +148,10 @@ function listTasks(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
 
-    log.info("listTasks was called for: ", owner);
+    log.info("listTasks was called for: ", req.params.owner);
 
     Task.find({
-        owner: owner
+        owner: req.params.owner
     }).limit(20).sort('date').exec(function(err, data) {
 
         if (err)
@@ -198,7 +165,7 @@ function listTasks(req, res, next) {
             log.warn(err, "There is no tasks in the database. Add one!");
         }
 
-        if (!owner) {
+        if (!req.params.owner) {
             log.warn(err, "You did not pass an owner when listing tasks.");
         } else {
 
@@ -211,12 +178,11 @@ function listTasks(req, res, next) {
 }
 
 ///--- Errors for communicating something interesting back to the client
-
 function MissingTaskError() {
     restify.RestError.call(this, {
         statusCode: 409,
         restCode: 'MissingTask',
-        message: '"task" is a required parameter',
+        message: '"Text" is a required parameter',
         constructorOpt: MissingTaskError
     });
 
@@ -224,44 +190,12 @@ function MissingTaskError() {
 }
 util.inherits(MissingTaskError, restify.RestError);
 
-
-function TaskExistsError(owner) {
-    assert.string(owner, 'owner');
-
-    restify.RestError.call(this, {
-        statusCode: 409,
-        restCode: 'TaskExists',
-        message: owner + ' already exists',
-        constructorOpt: TaskExistsError
-    });
-
-    this.name = 'TaskExistsError';
-}
-util.inherits(TaskExistsError, restify.RestError);
-
-
-function TaskNotFoundError(owner) {
-    assert.string(owner, 'owner');
-
-    restify.RestError.call(this, {
-        statusCode: 404,
-        restCode: 'TaskNotFound',
-        message: owner + ' was not found',
-        constructorOpt: TaskNotFoundError
-    });
-
-    this.name = 'TaskNotFoundError';
-}
-
-util.inherits(TaskNotFoundError, restify.RestError);
-
 /**
  * Our Server
  */
 
-
 var server = restify.createServer({
-    name: "Windows Azure Active Directroy TODO Server",
+    name: "Node.js REST protected by Azure AD",
     version: "2.0.1"
 });
 
@@ -299,50 +233,19 @@ server.use(restify.authorizationParser()); // Looks for authorization headers
 server.use(passport.initialize()); // Starts passport
 server.use(passport.session()); // Provides session support
 
-/**
-/*
-/* Calling the OIDCBearerStrategy and managing users
-/*
-/* Passport pattern provides the need to manage users and info tokens
-/* with a FindorCreate() method that must be provided by the implementor.
-/* Here we just autoregister any user and implement a FindById().
-/* You'll want to do something smarter.
-**/
-
-var findById = function(id, fn) {
-    for (var i = 0, len = users.length; i < len; i++) {
-        var user = users[i];
-        if (user.sub === id) {
-            log.info('Found user: ', user);
-            return fn(null, user);
-        }
-    }
-    return fn(null, null);
-};
-
-
-var oidcStrategy = new OIDCBearerStrategy(options,
+var bearerStrategy = new OIDCBearerStrategy(options,
     function(token, done) {
-        log.info('verifying the user');
         log.info(token, 'was the token retreived');
-        findById(token.sub, function(err, user) {
-            if (err) {
-                return done(err);
-            }
-            if (!user) {
-                // "Auto-registration"
-                log.info('User was added automatically as they were new. Their sub is: ', token.sub);
-                users.push(token);
-                owner = token.sub;
-                return done(null, token);
-            }
-            owner = token.sub;
-            return done(null, user, token);
-        });
+        if (!token.oid)
+            done(new Error('oid is not found in token'));
+        else {
+            owner = token.oid;
+            done(null, token);
+        }
     }
 );
 
-passport.use(oidcStrategy);
+passport.use(bearerStrategy);
 
 /// Now the real handlers. Here we just CRUD
 
@@ -353,58 +256,29 @@ passport.use(oidcStrategy);
 /* we don't need to maintain session state. You can experiement removing API protection
 /* by removing the passport.authenticate() method like so:
 /*
-/* server.get('/tasks', listTasks);
+/* server.get('/api/tasks', listTasks);
 /*
 **/
 
 
-server.get('/tasks', passport.authenticate('oauth-bearer', {
+// Handlers with protection
+server.get('/api/tasks/:owner', passport.authenticate('oauth-bearer', {
     session: false
 }), listTasks);
-server.get('/tasks/:owner', passport.authenticate('oauth-bearer', {
-    session: false
-}), getTask);
-server.head('/tasks/:owner', passport.authenticate('oauth-bearer', {
-    session: false
-}), getTask);
-server.post('/tasks/:owner/:task', passport.authenticate('oauth-bearer', {
+server.post('/api/tasks/:owner/:Text', passport.authenticate('oauth-bearer', {
     session: false
 }), createTask);
-server.post('/tasks', passport.authenticate('oauth-bearer', {
-    session: false
-}), createTask);
-server.del('/tasks/:owner/:task', passport.authenticate('oauth-bearer', {
+server.del('/api/tasks/:owner/:Text', passport.authenticate('oauth-bearer', {
     session: false
 }), removeTask);
-server.del('/tasks/:owner', passport.authenticate('oauth-bearer', {
-    session: false
-}), removeTask);
-server.del('/tasks', passport.authenticate('oauth-bearer', {
-    session: false
-}), removeTask);
-server.del('/tasks', passport.authenticate('oauth-bearer', {
-    session: false
-}), removeAll, function respond(req, res, next) {
-    res.send(204);
-    next();
-});
+
 
 
 /*
-// Handlers without protection for testing purpose
-
-server.get('/tasks', listTasks);
-server.get('/tasks/:owner', getTask);
-server.head('/tasks/:owner', getTask);
-server.post('/tasks/:owner/:task', createTask);
-server.post('/tasks', createTask);
-server.del('/tasks/:owner/:task', removeTask);
-server.del('/tasks/:owner', removeTask);
-server.del('/tasks', removeTask);
-server.del('/tasks', removeAll, function respond(req, res, next) {
-    res.send(204);
-    next();
-});
+// Handlers without protection
+server.get('/api/tasks/:owner', listTasks);
+server.post('/api/tasks/:owner/:Text', createTask);
+server.del('/api/tasks/:owner/:Text', removeTask);
 */
 
 
@@ -413,12 +287,9 @@ server.del('/tasks', removeAll, function respond(req, res, next) {
 server.get('/', function root(req, res, next) {
     var routes = [
         'GET     /',
-        'POST    /tasks/:owner/:task',
-        'POST    /tasks (for JSON body)',
-        'GET     /tasks',
-        'PUT     /tasks/:owner',
-        'GET     /tasks/:owner',
-        'DELETE  /tasks/:owner/:task'
+        'POST    /api/tasks/:owner/:Text',
+        'GET     /api/tasks/:owner',
+        'DELETE  /api/tasks/:owner/:Text'
     ];
     res.send(200, routes);
     next();
@@ -430,7 +301,7 @@ server.listen(serverPort, function() {
     var consoleMessage = '\n Windows Azure Active Directory Tutorial';
     consoleMessage += '\n +++++++++++++++++++++++++++++++++++++++++++++++++++++';
     consoleMessage += '\n %s server is listening at %s';
-    consoleMessage += '\n Open your browser to %s/tasks\n';
+    consoleMessage += '\n Open your browser to %s/api/tasks\n';
     consoleMessage += '+++++++++++++++++++++++++++++++++++++++++++++++++++++ \n';
     consoleMessage += '\n !!! why not try a $curl -isS %s | json to get some ideas? \n';
     consoleMessage += '+++++++++++++++++++++++++++++++++++++++++++++++++++++ \n\n';

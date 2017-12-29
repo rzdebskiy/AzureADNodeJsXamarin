@@ -9,7 +9,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>973828ed-44c2-48a3-b182-7c46162574e3</ProjectGuid>
+    <ProjectGuid>c0a5cd12-34e8-4242-8942-56f7169e141c</ProjectGuid>
     <ProjectHome>.</ProjectHome>
     <StartupFile>
     </StartupFile>
@@ -30,31 +30,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="node-server\" />
-    <Folder Include="node-server\typings\" />
-    <Folder Include="node-server\typings\browser\" />
-    <Folder Include="node-server\typings\browser\ambient\" />
-    <Folder Include="node-server\typings\browser\ambient\express-serve-static-core\" />
-    <Folder Include="node-server\typings\browser\ambient\express\" />
-    <Folder Include="node-server\typings\browser\ambient\node\" />
-    <Folder Include="node-server\typings\browser\ambient\serve-static\" />
-    <Folder Include="node-server\typings\main\" />
-    <Folder Include="node-server\typings\main\ambient\" />
-    <Folder Include="node-server\typings\main\ambient\express-serve-static-core\" />
-    <Folder Include="node-server\typings\main\ambient\express\" />
-    <Folder Include="node-server\typings\main\ambient\node\" />
-    <Folder Include="node-server\typings\main\ambient\serve-static\" />
-  </ItemGroup>
-  <ItemGroup>
-    <TypeScriptCompile Include="node-server\typings\browser.d.ts" />
-    <TypeScriptCompile Include="node-server\typings\browser\ambient\express-serve-static-core\index.d.ts" />
-    <TypeScriptCompile Include="node-server\typings\browser\ambient\express\index.d.ts" />
-    <TypeScriptCompile Include="node-server\typings\browser\ambient\node\index.d.ts" />
-    <TypeScriptCompile Include="node-server\typings\browser\ambient\serve-static\index.d.ts" />
-    <TypeScriptCompile Include="node-server\typings\main.d.ts" />
-    <TypeScriptCompile Include="node-server\typings\main\ambient\express-serve-static-core\index.d.ts" />
-    <TypeScriptCompile Include="node-server\typings\main\ambient\express\index.d.ts" />
-    <TypeScriptCompile Include="node-server\typings\main\ambient\node\index.d.ts" />
-    <TypeScriptCompile Include="node-server\typings\main\ambient\serve-static\index.d.ts" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="node-server\app.js" />

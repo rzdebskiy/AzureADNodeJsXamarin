@@ -19,7 +19,7 @@
                 <Label x:Name="lblUserName" Text="none" FontSize="Small"/>
             </StackLayout>            
             <Button x:Name="btnCallRestAdal" Text="Get Tasks list" Clicked="btnCallRestAdal_Clicked" />
-            <Entry x:Name="txtInput" Text="Task01" />
+            <Entry x:Name="txtInput" Text="task01" />
             <Button x:Name="btnAddTaskRestAdal" Text="Add task" Clicked="btnAddTaskRestAdal_Clicked" />
             <Button x:Name="btnDeleteTaskRestAdal" Text="Delete task" Clicked="btnDeleteTaskRestAdal_Clicked" />
                 <Label Text="Messages:" FontSize="Small"/>
