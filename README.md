@@ -24,5 +24,23 @@ To use this sample, you will need a Microsoft Azure Active Directory Tenant. If 
 
 ### Step 2: Register your Web API with your Microsoft Azure AD Tenant
 After you get your Microsoft Azure AD tenant, add Node.js sample app to your tenant so you can use it to protect your API endpoints. To do that:
-1.	Login to your Azure Subscription or start free trial.
+1. Login to your [Azure Subscription](https://portal.azure.com/) or [start free trial](https://azure.microsoft.com/en-us/offers/ms-azr-0044p).
 2.	Go to “Azure Active Directory” -> “App registrations” and click "New application registration".
+![Application registration](https://github.com/ashapoms/AzureADNodeJsXamarin/blob/master/img/AzureADAppRegistration.PNG)
+3.	On the “Create” page give your app a name, for example “NodeJSBearerRestServer”, ensure that “Application type” set to “Web app / API”, fill in the “Sign-on URL” field with the value “[http://localhost:3000](http://localhost:3000)” and then click “Create”.
+![Create WebApi](https://github.com/ashapoms/AzureADNodeJsXamarin/blob/master/img/CreateWebApiApp.PNG)
+4.	Click on just created app (use “Search” field if necessary) and copy “Application ID” (often referred also as “Client ID”). Save this ID somewhere, you will use it in Node.js configuration later.
+![ApplicationID](https://github.com/ashapoms/AzureADNodeJsXamarin/blob/master/img/ApplicationID.PNG)
+5.	Also, you will need your Azure Active Directory “Tenant ID” (another term is “Directory ID”). On Azure portal go to “Azure Active Directory” -> “Properties”, copy “Directory ID” and save it for later use.
+![TenantID](https://github.com/ashapoms/AzureADNodeJsXamarin/blob/master/img/TenantID.PNG)
+### Step 3: Download Node.js for your platform
+To successfully use this sample, you need a working installation of Node.js.
+Install Node.js from [http://nodejs.org](http://nodejs.org/).
+### Step 4: Install MongoDB on to your platform
+To successfully use this sample, you must have a working installation of MongoDB. We will use MongoDB to make our REST API persistent across server instances.
+Install MongoDB from [http://mongodb.org](http://www.mongodb.org/).
+**NOTE**: This walkthrough assumes that you use the default installation and server endpoints for MongoDB.
+### Step 5: Download the sample applications and modules
+Next, clone the sample repo and install the NPM.
+From your shell or command line:
+
