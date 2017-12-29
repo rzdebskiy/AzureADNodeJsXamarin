@@ -15,5 +15,14 @@ After installing and configuring REST API service you can use Xamarin client to 
 Xamarin code is based on [XamarinFormsMFASample](https://github.com/rzdebskiy/XamarinFormsMFASample). 
 General authentication flow for this scenario is illustrated below. For more details please refer to [Authentication Scenarios for Azure AD](https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-authentication-scenarios#native-application-to-web-api).
 
-
 ![Authentication flow](https://github.com/ashapoms/AzureADNodeJsXamarin/blob/master/img/native_app_to_web_api.png)
+
+## Installing and configuring REST API service on Node.js 
+
+### Step 1: Register a Microsoft Azure AD Tenant
+To use this sample, you will need a Microsoft Azure Active Directory Tenant. If you're not sure what a tenant is or how you would get one, read [What is an Azure AD](https://docs.microsoft.com/en-us/azure/active-directory/active-directory-whatis)? or [Sign up for Azure as an organization](http://azure.microsoft.com/en-us/documentation/articles/sign-up-organization/). These docs should get you started on your way to using Microsoft Azure AD.
+
+### Step 2: Register your Web API with your Microsoft Azure AD Tenant
+After you get your Microsoft Azure AD tenant, add Node.js sample app to your tenant so you can use it to protect your API endpoints. To do that:
+1.	Login to your Azure Subscription or start free trial.
+2.	Go to “Azure Active Directory” -> “App registrations” and click "New application registration".
