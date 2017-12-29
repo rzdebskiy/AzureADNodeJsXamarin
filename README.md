@@ -1,2 +1,3 @@
 # AzureADNodeJsXamarin 
-This Node.js server will give you with a quick and easy way to set up a REST API Service using the OAuth2 protocol. Then this service is integrated with Azure Active Directory for API protection. The sample server included in the download are designed to run on any platform.
+This sample demonstrates how to set up Node.js REST API service using OAuth2 protocol. Then this service is integrated with Azure Active Directory for API protection.  
+Xamarin mobile client will be used to test access to the service.  
