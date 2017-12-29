@@ -33,14 +33,46 @@ After you get your Microsoft Azure AD tenant, add Node.js sample app to your ten
 ![ApplicationID](https://github.com/ashapoms/AzureADNodeJsXamarin/blob/master/img/ApplicationID.PNG)
 5.	Also, you will need your Azure Active Directory “Tenant ID” (another term is “Directory ID”). On Azure portal go to “Azure Active Directory” -> “Properties”, copy “Directory ID” and save it for later use.
 ![TenantID](https://github.com/ashapoms/AzureADNodeJsXamarin/blob/master/img/TenantID.PNG)
+
 ### Step 3: Download Node.js for your platform
 To successfully use this sample, you need a working installation of Node.js.
 Install Node.js from [http://nodejs.org](http://nodejs.org/).
+
 ### Step 4: Install MongoDB on to your platform
 To successfully use this sample, you must have a working installation of MongoDB. We will use MongoDB to make our REST API persistent across server instances.
 Install MongoDB from [http://mongodb.org](http://www.mongodb.org/).
 **NOTE**: This walkthrough assumes that you use the default installation and server endpoints for MongoDB.
+
 ### Step 5: Download the sample applications and modules
 Next, clone the sample repo and install the NPM.
 From your shell or command line:
+```
+$ git clone https://github.com/ashapoms/AzureADNodeJsXamarin
+$ cd AzureADNodeJsXamarin/RestApiServer/node-server/
+$ npm install
+```
+### Step 6: Configure your server using config.js
+Update “identityMetadata” and “clientID” parameters in config.js file with “Tenant ID” and “Client ID” values copied early in Step 2. 
+![Update Config.js](https://github.com/ashapoms/AzureADNodeJsXamarin/blob/master/img/ConfigJSUpdate.PNG)
+
+### Step 7: Run the application
+```
+$ node server.js | bunyan
+```
+Now you have a server successfully running on http://localhost:3000. Your REST / JSON API Endpoint is [http://localhost:3000/api/tasks](http://localhost:3000/api/tasks). 
+
+## Configuring Xamarin mobile client 
+
+### Step 8: Register your Xamarin native app with your Microsoft Azure AD Tenant
+To register your Xamarin app please complete steps 1-5 from [this guide](https://github.com/rzdebskiy/XamarinFormsMFASample).
+### Step 9: Update your Xamarin mobile client
+Finally, you should update “[MainPage.xaml.cs](https://github.com/ashapoms/AzureADNodeJsXamarin/blob/master/MFATest/MFATest/MainPage.xaml.cs)” with appropriate values.
+![Update client](https://github.com/ashapoms/AzureADNodeJsXamarin/blob/master/img/XamarinMainPage.PNG)
+
+## Useful notes, links and resources:
+
+[Authentication Scenarios for Azure AD](https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-authentication-scenarios)
+[Azure AD token reference](https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-token-and-claims)
+[Azure AD Node.js web API getting started](https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-devquickstarts-webapi-nodejs)
+[Azure AD Node.js web app getting started](https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-devquickstarts-openidconnect-nodejs)
 
