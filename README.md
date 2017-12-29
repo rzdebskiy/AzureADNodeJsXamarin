@@ -15,4 +15,4 @@ After installing and configuring REST API service you can use Xamarin client to 
 Xamarin code is based on [XamarinFormsMFASample](https://github.com/rzdebskiy/XamarinFormsMFASample). 
 General authentication flow for this scenario is illustrated below. For more details please refer to [Authentication Scenarios for Azure AD](https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-authentication-scenarios#native-application-to-web-api).
 
-
+![Authentication flow](https://github.com/ashapoms/AzureADNodeJsXamarin/blob/master/img/native_app_to_web_api.png)
