@@ -16,7 +16,7 @@ namespace MFATest
         public static string clientId = "<<Insert your mobile client ID here>>";
         public static string authority = "https://login.windows.net/common";
         public static string returnUri = "http://MFATestPCL-redirect";
-        private const string graphResourceUri = "https://graph.windows.net";
+        private const string graphResourceUri = "<<Insert your App ID URI of Node.js endpoint here>>";
         private AuthenticationResult authResult = null;
         private static string userLogin = null;
         private static string RestUri = "<<Insert your REST API endpoint here>>"; // for example "http://MyRestServer.com:3000/api/tasks/" 
@@ -142,6 +142,6 @@ namespace MFATest
             else
                 lblMessage.Text = "Please press Login to Azure button first";
 
-        }
+        }        
     }
 }
