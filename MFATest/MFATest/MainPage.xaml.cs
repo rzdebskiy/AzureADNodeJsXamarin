@@ -15,7 +15,7 @@ namespace MFATest
     {
         public static string clientId = "<<Insert your mobile client ID here>>";
         public static string authority = "https://login.windows.net/common";
-        public static string returnUri = "http://MFATestPCL-redirect";
+        public static string returnUri = "http://localhost:3000";
         private const string graphResourceUri = "<<Insert your App ID URI of Node.js endpoint here>>";
         private AuthenticationResult authResult = null;
         private static string userLogin = null;
@@ -142,6 +142,18 @@ namespace MFATest
             else
                 lblMessage.Text = "Please press Login to Azure button first";
 
-        }        
+        }
+
+        private void btnShowCookies_Clicked(object sender, EventArgs e)
+        {
+            var auth = DependencyService.Get<IAuthenticator>();
+             
+            StringBuilder cookies = new StringBuilder();
+            foreach(var cookie in auth.GetCookies())
+            {
+                cookies.Append($"{cookie.Name}  Expiration:{cookie.MaxAge.ToString()}");
+            }
+            lblMessage.Text = cookies.ToString();
+        }
     }
 }

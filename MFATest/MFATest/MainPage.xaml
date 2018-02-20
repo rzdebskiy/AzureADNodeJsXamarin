@@ -5,26 +5,28 @@
              x:Class="MFATest.MainPage">
     <ContentPage.Content>
         <ScrollView>
-        <StackLayout>
-            <Label Text="Pass-through auth test app"
+            <StackLayout>
+                <Label Text="Pass-through auth test app"
                 VerticalOptions="Center"
                    HeightRequest="20"
                 HorizontalOptions="CenterAndExpand" />
-            <StackLayout Orientation="Horizontal"  HorizontalOptions="Center">
-                <Button x:Name="btnLogin" Text="Login to AD" Clicked="btnLogin_Clicked" FontSize="Small" HorizontalOptions="Center"/>
-                <Button x:Name="btnLogout" Text="Clear token" Clicked="btnLogout_Clicked" FontSize="Small" HorizontalOptions="Center" IsEnabled="False"/>
-            </StackLayout>
-            <StackLayout Orientation="Horizontal">
-                <Label x:Name="lblTextUser" Text="Authenticated User: " FontSize="Small"/>
-                <Label x:Name="lblUserName" Text="none" FontSize="Small"/>
-            </StackLayout>            
-            <Button x:Name="btnCallRestAdal" Text="Get Tasks list" Clicked="btnCallRestAdal_Clicked" />
-            <Entry x:Name="txtInput" Text="task01" />
-            <Button x:Name="btnAddTaskRestAdal" Text="Add task" Clicked="btnAddTaskRestAdal_Clicked" />
-            <Button x:Name="btnDeleteTaskRestAdal" Text="Delete task" Clicked="btnDeleteTaskRestAdal_Clicked" />
+                <StackLayout Orientation="Horizontal"  HorizontalOptions="Center">
+                    <Button x:Name="btnLogin" Text="Login to AD" Clicked="btnLogin_Clicked" FontSize="Small" HorizontalOptions="Center"/>
+                    <Button x:Name="btnLogout" Text="Clear token" Clicked="btnLogout_Clicked" FontSize="Small" HorizontalOptions="Center" IsEnabled="False"/>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label x:Name="lblTextUser" Text="Authenticated User: " FontSize="Small"/>
+                    <Label x:Name="lblUserName" Text="none" FontSize="Small"/>
+                </StackLayout>
+                <Button x:Name="btnCallRestAdal" Text="Get Tasks list" Clicked="btnCallRestAdal_Clicked" />
+                <Entry x:Name="txtInput" Text="task01" />
+                <Button x:Name="btnAddTaskRestAdal" Text="Add task" Clicked="btnAddTaskRestAdal_Clicked" />
+                <Button x:Name="btnDeleteTaskRestAdal" Text="Delete task" Clicked="btnDeleteTaskRestAdal_Clicked" />
                 <Label Text="Messages:" FontSize="Small"/>
                 <Label x:Name="lblMessage" FontSize="Small"/>
+                <Entry x:Name="txtURI" Text="https://login.windows.net/common"/>
+                <Button x:Name="btnShowCookies" Text="ShowCookies" Clicked="btnShowCookies_Clicked" />
             </StackLayout>
-            </ScrollView>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>
